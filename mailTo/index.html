@@ -1,0 +1,128 @@
+﻿<!doctype html>
+<html>
+
+<head>
+	<title>epost &amp; mobil</title>
+    
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes" -->
+        
+	<meta name="robots" content="none"/>
+
+	<!-- Screen shortcut icons -->
+	<link href="img/favicon.ico" rel="icon" type="image/x-icon"/>
+	<link href="img/apple-touch-icon.png" rel="apple-touch-icon" />
+	<link href="img/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
+	<link href="img/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120" />
+	<link href="img/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
+
+	<!-- css -->
+	<link rel="stylesheet" href="css/main.css"/>
+
+    <!-- 320px / 16px = 20em --><!-- ((320 + 360)/2) px / 16px = 21.25em -->
+	<!-- link rel="stylesheet" media="screen and (min-width: 21.25em)" href="css/responsive1.css"/ -->
+    <link class="mediaquery" rel="stylesheet" data-media="screen and (min-width: 21.25em)" data-href="css/responsive1.css"/>
+
+    <!-- 630px / 16px = 39.375em -->
+	<!-- link rel="stylesheet" media="screen and (min-width: 39.375em)" href="css/responsive2.css"/ -->
+    <link class="mediaquery" rel="stylesheet" data-media="screen and (min-width: 39.375em)" data-href="css/responsive2.css"/>
+
+    <!-- 870px / 16px = 54.375em -->
+	<!-- link rel="stylesheet" media="screen and (min-width: 54.375em)" href="css/responsive3.css"/ -->
+    <link class="mediaquery" rel="stylesheet" data-media="screen and (min-width: 54.375em)" data-href="css/responsive3.css"/>
+    
+    <!-- 1000px / 16px = 62.5 -->
+	<!-- link rel="stylesheet" media="screen and (min-width: 62.5em)" href="css/responsive4.css"/ -->
+    <!-- link class="mediaquery" rel="stylesheet" data-media="screen and (min-width: 62.5em)" data-href="css/responsive4.css"/ -->
+    
+    <!-- script -->
+    <!-- script src="js/mediaqueryload.js"></script -->
+    <script src="js/kg.js"></script>
+    <script src="js/mailTo.js"></script>
+    <script src="js/mediaqueryload.js"></script> 
+        
+</head>
+<body onload="mediaqueryload(); loadList();">
+	<!-- page -->
+	<div class="page hidden">
+
+        <!-- header -->
+	    <div id="header" class="header" onclick="toggleOptions()">	
+			<span id="size" style="display:none"></span>
+			<!-- img id="logo" src="img/dot.png"/ -->
+           	<!-- img class="mediaquery hidden" src="img/logo_epost.jpg"/ -->
+            <!-- <=629px, >=630px -->
+           	<img class="mediaquery hidden" data-src="img/logo_farge_sort.jpg" data-media="screen and (max-width: 629px)"/>
+           	<img class="mediaquery hidden" data-src="img/logo_farge_sort3_lang.jpg" data-media="screen and (min-width: 630px)"/ >
+		</div>
+        
+        <!-- content -->
+		<div class="content">
+        
+        	<!-- options -->
+			<div id="options" class="options clearfix">
+				<div id="options1" class="column column-first">
+					<table>
+						<tr>
+						<td><input type="checkbox" name="trim" id="trim" onclick="checkTrim(this)"/><label for="trim">Trim</label></td>
+						<td><input type="checkbox" name="sep" id="sep" onclick="checkSep(this)"/><label for="sep">'&nbsp;,&nbsp;'</label></td>
+						<td><input type="checkbox" name="quote" id="quote" onclick="checkQuote(this)"/><label for="quote">'&nbsp;"&nbsp;'</label>
+                        </td>
+						</tr>
+					</table>
+				</div>
+				<div id="options2" class="column column-first column-last">
+					<table>
+						<tr>
+						<td><input type="checkbox" name="ansi" id="ansi" onclick="checkANSI(this)"/><label for="ansi">ANSI</label></td>
+						<!-- td><input type="checkbox" name="brackets" id="bra" onclick="checkBra(this)"/><label for="bra">'[&nbsp;]'</label></td -->
+                        <td class="mediaquery hidden" data-media="screen and (max-width: 870px)">
+                        	<input  type="checkbox" name="sms" id="sms" onclick="checkSMS(this)"/>
+                        	<label for="sms">SMS</label>
+                        </td>
+						<td><input type="checkbox" name="bcc" id="bcc" onclick="checkBcc(this)"/><label for="bcc">Bcc&nbsp;</label></td>
+						</tr>
+					</table>
+				</div>
+            </div>
+            
+           	<!-- menu -->
+			<div class="menu clearfix">
+
+				<!-- button -->
+				<div class="button column-first">
+					<select id="select" onchange=" this.blur(); showGroup(this.options[this.selectedIndex]);">
+						<option value="" disabled="disabled" selected>Velg kategori</option>
+						<option value="E">Elever</option>
+                        <option value="L">Lærere</option>   
+						<option value="A">Elever og lærere</option>
+                    
+					</select>
+				</div>
+
+				<!-- button -->
+				<div class="button column-first column-last">
+               		<input id="Send" type="button" value="Send e-post&nbsp;&nbsp;&#9993;" onClick="this.blur(); sendSelection();"/>
+				</div>
+
+          	</div><!-- /menu -->	      
+			<!-- NamePage -->
+			<div id="namepage" class="namepage clearfix">
+   	    		<div id="namepage1" class="column column-first"></div>
+   	    		<div id="namepage2" class="column column-first column-last"></div>
+			</div>
+        
+		</div><!-- /content -->
+        
+		<!-- MailPage -->
+		<div id="mailpage" class="mailpage"></div>
+       	
+        <!-- No footer -->
+
+    </div><!-- /page -->
+    
+</body>
+</html>

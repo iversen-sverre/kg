@@ -1,0 +1,173 @@
+@charset "utf-8";
+/*
+	max-width: 25em, 400px / 16px = 25em
+	Lime:		rgb(141,198,63), #8dc63f
+	Burgunder:	rgb(130,0,36), #820024
+	85% svart:	#4d4d4f
+	10% svart:	#e6e7e8
+	svart:		#231f20
+*/
+
+body{
+	font-family:Calibri,Arial,Courier,Helvetica,'Times New Roman',Verdana !important;
+	background-color:rgb(255,255,255);
+	padding:0;
+	margin:0.2em 0 0 0;
+}
+
+img {
+	max-width:100%;
+	height:auto;
+	margin:0;
+	padding:0;
+	display:block;
+}
+
+.call {
+	text-decoration:none;
+	font-size:0.8em;
+	color:DarkGray;
+}
+
+.sms {
+	text-decoration:none;
+	font-size:0.7em;
+	font-weight:bold;
+	letter-spacing:-1px;
+	color:DarkGray;
+}
+
+.hidden {
+	display:none;
+}
+
+/* Page */
+div.page {
+	max-width:25rem; /* 400px / 16px = 25rem */
+	padding:0 1rem;  /* Old: 1.5em */
+	margin:0 auto;
+}
+
+/* Header */
+div.header {
+	width:100%;
+	background-color:#ffffff;
+	padding:0;
+	margin:0;
+}
+
+/* Content */
+div.content {
+	width:100%;
+	padding:0;
+	margin:0;
+}
+
+/* Menu */
+div.menu {
+	width:100%;	
+	padding:1rem 0 0;
+	margin:0;
+}
+
+div.menu, div.namepage, div.mailpage {
+	font-size:1.125em; /* 2.5 * 0.45 = 1.125 */
+}
+
+div.button {
+	display: table;
+	width:100%;
+	height:auto;
+	float:left;
+	margin-right:0;
+	margin-bottom:1rem; /* 40px / 16px = 2.5em */
+}
+
+input[type="checkbox"] {
+	font:inherit;
+    width:1em;
+    height:1em;
+	vertical-align:bottom;
+}
+
+/* input, select button */
+div>input,div>select{
+	font:inherit;
+	color:white;
+	text-decoration:none;
+    color:white;
+	margin:0;
+	padding:0 0.5em 0 1em; /* (952px / 2) - 8px) = 318px, 8px / 318px = 0.0251572327 */
+	background:none;
+    background-color:rgb(141,198,63);/*Lime color*/
+	width:100%;
+	height:2.0em;
+	display:table-cell;
+	white-space:nowrap;
+	border-radius:0.5em; /* 25px / 16px = 1.5625em */
+    outline:none;
+	border:none;
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	appearance:none;
+	text-align:left;
+}
+
+div>input{
+	padding-left:1.1em;
+}
+
+
+/* a (button) hover */
+div>input:hover,div>select:hover {
+    color:#fff;
+    /*background-color:rgb(130,0,36);Burgunder color*/
+	background-color:rgb(139,28,52);/*Burgunder color2*/	
+}
+
+div.options {
+	display:none;
+	white-space:nowrap;
+	width:100%;
+	background-color:pink;
+	margin-top:1rem;
+}
+
+div.options div table td{
+	width:33.333333333%;
+}
+
+table {
+	margin:0;
+	width:100%;
+}
+
+
+div.namepage {
+	display:block;
+	background-color:#e6e7e8;
+	width:100%;
+	padding:0;
+	/*height:auto;*/
+}
+
+div.column {
+	width:100%;
+	height:auto;
+	float:left;
+	margin-right:0;
+}
+
+div.mailpage {
+	width:100%;
+	margin-top:1rem;
+	display:none;
+	height:auto;
+	margin-bottom:1em;
+	word-break:break-all;
+	background-color:pink;
+}
+
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; }

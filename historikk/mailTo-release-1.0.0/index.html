@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<META NAME="ROBOTS" CONTENT="NONE">
+<script>
+var oXHR = oXHRMake(), UNINITIALIZED=0, sUrl = document.location.href, bQuote=false, bANSI=false, bOffice=true, bTrim=false, bBcc=false, sSep=[';',','], oList=[], currSelection=[], sGroup="V", newLine='\r\n'/*\r\n or \n*/;
+var oSubject={V:"[øremaZZørene]",A:"[øremaZZørene]",S:"[øremaZZørene - Styret]",M:"[øremaZZørene - Musikkutvalget]",D:"[øremaZZørene - Draktkomiteen]",P:"[øremaZZørene - inkl permisjon]"};
+var oBrackets={braC:['<','>'],bra1:['<','>'],bra2:['[',']']};
+String.prototype.trim = function() { return this.replace(/^\s+|\s+$/, ''); };
+
+function is_ios(){//Checking for Mac|iPad|iPhone|iPod
+  var ios = (navigator.userAgent.match(/(Mac|iPad|iPhone|iPod)/g) ? true : false);
+  if (ios) document.getElementById("sep").checked=true;
+  return ios;
+}
+
+function uDef(o){return (typeof o=="undefined"?true:false)}
+
+function oXHRMake(){
+  var oXHR;
+  if (typeof XMLHttpRequest != "undefined")oXHR = new XMLHttpRequest();
+  else if (window.ActiveXObject){
+    var x="Msxml2.XMLHttp", ieVer=[x+".6.0",x+".5.0",x+".4.0",x+".3.0",x,"Microsoft.XMLHttp"];
+    for (var i=0; i<ieVer.length; i++)try{oXHR = ActiveXObject(ieVer[i]);}catch(err){}
+  }
+  return oXHR;
+}
+
+function ajaxState(){
+  if (oXHR.readyState==4) {
+	oListMake(oXHR.responseText);
+  }
+}
+
+function oListMake(sBuffer){
+  var persons=sBuffer.split(newLine);
+  for (var i=0; i<persons.length; i++){  
+    var person=persons[i].split(","); var NameGroup=person[0].split(";");
+	oList[i]=[];
+    oList[i][0]=NameGroup[0];
+	oList[i][1]=(!uDef(NameGroup[1])?NameGroup[1]:"");
+	oList[i][2]=(!uDef(person[1])?person[1]:"");
+  }
+}
+
+function ajaxData(sUrl){
+  if (oXHR){
+    if (oXHR.readyState!=UNINITIALIZED) oXHR.abort();
+    oXHR.onreadystatechange=ajaxState;
+	oXHR.open("GET", sUrl);
+	oXHR.send(null);
+  }
+}
+
+function loadList(){
+  bOffice=!is_ios(); //Checking for iPad|iPhone|iPod
+  ajaxData(String.fromCharCode(122,122,46,116,120,116)); 
+}
+
+function showNameList(){
+  var oNamePage = document.getElementById("NamePage");
+  if (oNamePage.innerHTML.length==0){	
+    var nTotal=oList.length, nCol=4;
+    var numPrCol=Math.ceil(nTotal/nCol);
+    var s='<table align=center><tr>';
+	s+='<td align=center colspan='+nCol+'><i>Velg navn og avslutt med OK-knappen</i>&nbsp;'+
+	'<input type="button" value="Alle" onclick="checkNames(true)"><input type="button" value="Ingen" onclick="checkNames(false)">'+
+	'&nbsp;<input id="OkBtn" type="button" value="OK" onclick="getNameList()"><td></tr><tr>';
+    var i=0;
+    for (var j=0; j<nCol; j++){
+	  s+="<td valign='top'>";
+      for (var k=1; k<=numPrCol&&i<nTotal; i++, k++){
+		if (oList[i][0]=="") continue;
+	    s+='<input type="checkbox" name="Name" value="'+i+'" '+(oList[i][2]==""?"disabled":"")+'/>'+
+	      oList[i][0]+(k!=numPrCol?"<br/>":"");
+      }
+	  s+="</td>";
+    }
+    s+="</tr></table>";
+    oNamePage.innerHTML=s;
+  }
+  toggleNamePage(true);
+}
+
+function checkNames(b){
+  var oName=document.getElementsByName("Name");
+  for (var i=0; i<oName.length; i++) if (!oName[i].disabled) oName[i].checked=b;
+}
+
+function showGroup(o){
+  sGroup=o.value;
+  currSelection=[];//empty selection
+  for (var i=0; i<oList.length; i++){
+	if (oList[i][2]!=""&&isGroup(oList[i][1])) currSelection.push(i);
+  }
+  document.getElementById("Send").disabled=false;
+  showCurrSelection();
+}
+
+function getNameList(){
+  var oName=document.getElementsByName("Name");
+  currSelection=[];//empty selection
+  for (var i=0; i<oName.length; i++){
+    if (oName[i].checked) currSelection.push(oName[i].value);
+  }
+  toggleNamePage(false);
+  showCurrSelection();
+}
+
+function showCurrSelection(){
+  var oMailPage=document.getElementById("MailPage");
+  if (oMailPage.style.display!="none"){ 	
+    sMailStr=writeCurrSelection();  
+    oMailPage.innerHTML=myEscape2(sMailStr);
+  }
+}
+
+function toggleNamePage(b){
+  var o=[document.getElementById("MailPage"),document.getElementById("NamePage")];
+  o[0].style.display=(b?"none":"block");
+  o[1].style.display=(b?"block":"none");
+  if(b){
+    disableButtons();
+	var oName=document.getElementsByName("Name");
+    for (var i=0; i<oName.length; i++) oName[i].checked=false;
+    for (var i=0; i<currSelection.length; i++) oName[currSelection[i]].checked=true;
+  }
+  else enableButtons();
+}
+
+function myEscape1(sMailStr){
+  return sMailStr.replace(new RegExp('Æ','g'),'%C6').replace(new RegExp('Ø','g'),'%D8').replace(new RegExp('Å','g'),'%C5').replace(new RegExp('æ','g'),'%E6').replace(new RegExp('ø','g'),'%F8').replace(new RegExp('å','g'),'%E5');
+  //.replace(new RegExp('<','g'),'%3C').replace(new RegExp('>','g'),'%3E').replace(new RegExp(';','g'),'%3B').replace(new RegExp(' ','g'),'%20');
+}
+
+function myEscape2(sMailStr){
+  return sMailStr.replace(new RegExp('<','g'),'&lt;').replace(new RegExp('>','g'),'&gt;');
+}
+
+function fixEmails(a){
+  var fix=[], sQuote=(bQuote?"\"":"");
+  for (var i =0;i<a.length;i++){
+	fix[i]=(!bTrim?sQuote+a[i][0].trim()+sQuote+oBrackets.braC[0]:"")+a[i][1].trim()+(!bTrim?oBrackets.braC[1]:"");
+	//fix[i]=a[i][0].trim()+" "+oBrackets.braC[0]+a[i][1].trim()+oBrackets.braC[1];
+  }
+  return fix.join(bOffice?sSep[0]:sSep[1]).replace(new RegExp('#','g'),'@');
+}
+
+function writeCurrSelection(){
+  var email, emails=[];
+  for (var i=0; i<currSelection.length; i++){
+    email = oList[currSelection[i]][2].split(';');
+	for (var j=0; j<email.length; j++){
+      if (email[j].trim().length<1) break;
+	  emails.push([oList[currSelection[i]][0],email[j]]);
+	}
+  }
+  return fixEmails(emails);
+}
+
+function sendSelection(){
+  var sMailStr="",sHeader="mailto:";
+  var sFooter=(sGroup.length>0?"subject="+oSubject[sGroup]:"")+"&body=%0A---------%0ASend epost: "+sUrl;
+  sMailStr=writeCurrSelection();
+  if(!bBcc){sMailStr+="?"} else {sMailStr="?bcc="+sMailStr+"&"}
+  sMailStr=(bANSI?myEscape1(sHeader+sMailStr+sFooter):sHeader+sMailStr+sFooter);
+  document.location.href=sMailStr;
+}
+
+function checkBra(o){
+  var sObj="bra"+(o.checked?2:1);
+  oBrackets.braC[0]=oBrackets[sObj][0];
+  oBrackets.braC[1]=oBrackets[sObj][1];
+  showCurrSelection();
+}
+
+function checkANSI(o){
+  bANSI=o.checked;
+}
+
+function checkSep(o){
+  bOffice=!o.checked;
+  showCurrSelection();
+}
+
+function checkBcc(o){
+  bBcc=o.checked;
+}
+
+function checkTrim(o){
+  bTrim=o.checked;
+  document.getElementById("bra").disabled=bTrim;
+  document.getElementById("quote").disabled=bTrim;
+  document.getElementById("ansi").disabled=bTrim;
+  showCurrSelection();
+}
+
+function checkQuote(o){
+  bQuote=o.checked;
+  showCurrSelection();
+}
+
+function disableButtons(){
+  var o = [document.getElementsByName("GroupBtn"),document.getElementById("NameBtn"),document.getElementById("Send")];
+  for (var i=0; i<o[0].length; i++){
+    if(o[0][i].checked) o[0][i].checked=false;
+	o[0][i].disabled=true;
+  }
+  o[1].blur();o[1].disabled=true;
+  o[2].disabled=true;
+}
+
+function enableButtons(){
+  var o = [document.getElementsByName("GroupBtn"),document.getElementById("NameBtn"),document.getElementById("Send")];
+  for (var i=0; i<o[0].length; i++) o[0][i].disabled=false;
+  o[1].disabled=false;
+  if (currSelection.length>0) o[2].disabled=false;
+}
+
+function isGroup(sValues){
+	var bOK=false;
+    if (sGroup=="P") bOK=true;
+    else if (sGroup=="A"&&sValues.indexOf("P")==-1) bOK=true;
+    else if (sValues.indexOf(sGroup)!=-1) bOK=true;
+    return bOK;
+}
+
+function setOptionsVisible(b){
+  document.getElementById("options").style.display=(b?"block":"none");
+  document.getElementById("txt").style.display=(b?"none":"block");
+}
+
+</script>
+</head>
+<body onload="loadList()">
+<center>
+<form><table style="text-align:center;vertical-align:middle">
+  <tr><td><h1>øremaZZørenes e-postliste:</h1></td><td>&nbsp;</td>
+  <td onmouseover="setOptionsVisible(true)" onmouseout="setOptionsVisible(false)" align="center">
+  <div id="options" style="display:none;position:relative;text-align:left;width:180px">
+  <table cellpadding="0" cellspacing="0" style="margin:0px">
+  <tr>
+    <td><nobr><input type="checkbox" name="trim" id="trim" onclick="checkTrim(this)"/>Trim&nbsp;</nobr></td>
+    <td><nobr><input type="checkbox" name="sep" id="sep" onclick="checkSep(this)"/>'&nbsp;,&nbsp;'</nobr></td>
+    <td><nobr><input type="checkbox" name="bcc" id="bcc" onclick="checkBcc(this)"/>Bcc&nbsp;</nobr></td>
+  </tr>
+  <tr>
+    <td><nobr><input type="checkbox" name="ansi" id="ansi" onclick="checkANSI(this)"/>ANSI&nbsp;</nobr></td>
+    <td><nobr><input type="checkbox" name="brackets" id="bra" onclick="checkBra(this)"/>'[&nbsp;]'&nbsp;</nobr></td>
+    <td><nobr><input type="checkbox" name="quote" id="quote" onclick="checkQuote(this)"/>'&nbsp;"&nbsp;'</nobr></td>
+  </tr>
+  </table>
+  </div>
+  <div id="txt" style="display:block;position:relative;text-align:left;width:180px">
+  <font size="-1"><i>Kopier listen fra skjermen hvis Send-knappen ikke virker</i></font>
+  </div>
+  </td>
+  </tr>
+  <tr><td colspan="2"><nobr>
+  <input type="radio" name="GroupBtn" value="A" onclick="showGroup(this)"/>Alle aktive
+  <input type="radio" name="GroupBtn" value="S" onclick="showGroup(this)"/>Styret
+  <input type="radio" name="GroupBtn" value="M" onclick="showGroup(this)"/>Musikkutvalget
+  <input type="radio" name="GroupBtn" value="D" onclick="showGroup(this)"/>Draktkomiteen
+  <input type="radio" name="GroupBtn" value="P" onclick="showGroup(this)"/>Alle inkl permisjon
+  </nobr></td><td><nobr>
+  <input id="NameBtn" type="button" value="Velg navn" onclick="showNameList()"/>&nbsp;
+  <input id="Send" type="button" value="Send e-post" onclick="sendSelection()" disabled="disabled"/>
+  </nobr>
+  </td></tr>
+  </table>
+  </form>
+  </center>
+  <div id="MailPage" style="display:block;position:absolute"></div>
+  <div id="NamePage" style="left:0px;right:0px;display:none;position:absolute"></div>
+</body>
+</html>

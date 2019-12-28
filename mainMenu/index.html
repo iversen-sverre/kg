@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>epost &amp; filer</title>
+
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>	
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes" -->
+    
+	<meta name="robots" content="none">
+
+	<!-- Screen shortcut icons -->
+	<link href="img/favicon.ico" rel="icon" type="image/x-icon"/>
+	<link href="img/apple-touch-icon.png" rel="apple-touch-icon" />
+	<link href="img/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
+	<link href="img/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120" />
+	<link href="img/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
+	
+	<!-- css -->
+	<link rel="stylesheet" href="css/main.css"/>
+    
+    <!-- ((320 + 360)/2)=340px / 16px = 21.25em -->
+	<!-- link rel="stylesheet" media="screen and (min-width: 21.25em)" href="css/responsive1.css"/ -->
+    <link class="mediaquery" rel="stylesheet" data-media="screen and (min-width: 21.25em)" data-href="css/responsive1.css"/>
+       
+    <!-- 630px / 16px = 39.375em -->
+	<!-- link rel="stylesheet" media="screen and (min-width: 39.375em)" href="css/responsive2.css"/ -->
+    <link class="mediaquery" rel="stylesheet" data-media="screen and (min-width: 39.375em)" data-href="css/responsive2.css"/>
+    
+    <!-- 870px / 16px = 54.375em -->
+	<!-- link rel="stylesheet" media="screen and (min-width: 54.375em)" href="css/responsive3.css"/ -->
+    <link class="mediaquery" rel="stylesheet" data-media="screen and (min-width: 54.375em)" data-href="css/responsive3.css"/>
+    
+    <!-- 1000px / 16px = 62.5 -->
+	<!-- link rel="stylesheet" media="screen and (min-width: 62.5em)" href="css/responsive4.css"/ -->
+    <!-- link class="mediaquery" rel="stylesheet" data-media="screen and (min-width: 62.5em)" data-href="css/responsive4.css"/ -->
+
+	<!-- script -->
+    <script src="js/mediaqueryload.js"></script> 
+</head>
+
+<body onload="mediaqueryload();mediaqueryload()">
+	<!-- page -->
+	<div class="page hidden">
+		<!-- header -->
+		<div id="header" class="header">	
+        	<span id="size" style="display:none"></span>
+			<!-- img id="logo" src="img/dot.png"/ -->
+           	<!-- img class="mediaquery hidden" src="img/logo_epost.jpg"/ -->
+            <!-- <=629px, >=630px -->
+           	<img class="mediaquery hidden" data-src="img/logo_farge_sort.jpg" data-media="screen and (max-width: 629px)"/>
+           	<img class="mediaquery hidden" data-src="img/logo_farge_sort3_lang.jpg" data-media="screen and (min-width: 630px)"/ >
+		</div>
+		
+		<!-- content -->
+		<div class="content clearfix">
+        
+			<!-- menu -->
+			<div class="menu clearfix">
+
+				<!-- button -->
+				<div class="button button-first">
+					<a href="../mailTo.htm">E-post &amp; mobil</a>
+				</div>
+			
+				<!-- button -->
+				<div class="button button-first button-last">
+					<a href="../arkiv1.htm">Bildearkiv</a>
+				</div>
+			
+				<!-- button -->
+				<div class="button button-first">
+					<a href="../arkiv2.htm">Arrangementer</a>
+				</div>
+
+				<!-- button -->
+				<div class="button button-first button-last">
+					<a href="../arkiv3.htm">Annen info</a>
+				</div>
+                
+			</div>
+
+    	</div>
+	
+		<!-- footer -->
+		<div class="footer">
+			<span>Savner du noe eller ønsker å legge inn noe til nytte for klassen? Ta kontakt med en av moderatorene for lagringen.</span>
+		</div>
+
+	</div><!-- /page -->   
+</body>
+
+</html>
